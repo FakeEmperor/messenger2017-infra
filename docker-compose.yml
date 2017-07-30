@@ -1,0 +1,20 @@
+version: '3.2'
+
+
+services:
+  gitlab:
+    image: gitlab/gitlab-ce:latest
+    hostname: gitlab.example.com
+    ports:
+      - target: 443
+        published: 443
+      - target: 80
+        published: 80
+      - target: 22
+        published: 22
+    restart: always
+    volumes:
+      - ./gitlab/config:/etc/gitlab
+      - ./gitlab/logs:/var/log/gitlab
+      - ./gitlab/data:/var/opt/gitlab 
+    

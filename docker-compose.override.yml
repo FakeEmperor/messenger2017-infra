@@ -1,0 +1,4 @@
+version: '3.2'
+
+# for development (docker-compose up -d подхватывает docker-compose.yml и сверху него этот файл автоматически)
+    

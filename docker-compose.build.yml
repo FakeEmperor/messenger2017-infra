@@ -1,0 +1,13 @@
+version: '3.2'
+
+# файл для билда имаджей
+# docker-compose -f docker-compose.yml -f docker-compose.build.yml build && docker-compose -f docker-compose.yml -f docker-compose.build.yml push
+services:
+  kibana:
+    build: elk/kibana/
+
+  logstash:
+    build: elk/logstash/
+
+  elasticsearch:
+    build: elk/elasticsearch/

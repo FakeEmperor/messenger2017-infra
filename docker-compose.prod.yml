@@ -1,0 +1,47 @@
+version: '3.2'
+
+services:
+  elasticsearch:
+    deploy:
+      restart_policy:
+        condition: on-failure
+    build: elasticsearch/
+    volumes:
+      - ./elasticsearch/config/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml
+      - elasticsearch:/usr/share/elasticsearch/data:rw
+    ports:
+      - target: 9200
+        published: 9200
+      - target: 9300
+        published: 9300
+    environment:
+      ES_JAVA_OPTS: "-Xmx256m -Xms256m"
+
+  logstash:
+    deploy:
+      restart_policy:
+        condition: on-failure
+    build: logstash/
+    volumes:
+      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml
+      - ./logstash/pipeline:/etc/logstash/conf.d
+    ports:
+      - target: 5000
+        published: 5000
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    depends_on:
+      - elasticsearch
+
+  kibana:
+    deploy:
+      restart_policy:
+        condition: on-failure
+    build: kibana/
+    volumes:
+      - ./kibana/config/:/usr/share/kibana/config
+    ports:
+      - target: 5601
+        published: 5601
+    depends_on:
+      - elasticsearch
